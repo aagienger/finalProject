@@ -5,8 +5,8 @@ import AddContact from "./AddContacts.js";
 import Sidebar from "./Sidebar.js";
 import DeleteContact from "./DeleteContacts.js";
 import SearchContact from "./SearchContacts.js";
-import Authentication from "./Login";
 import NewMessage from "./NewMessages.js";
+import Checkout from "./Checkout.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -46,7 +46,12 @@ function App() {
                     <Products products={products} setProducts={setProducts} />
                   }
                 />
-                
+                <Route
+                  path="/checkout"
+                  element={
+                    <Checkout products={products} setProducts={setProducts}/>
+                  }
+                />
               </Routes>
             </div>
           </div>
