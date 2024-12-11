@@ -126,6 +126,7 @@ const Products = ({ products, setProducts }) => {
               <p>$<strong>{product.price}</strong></p>
               <button type="button" variant="light" onClick={()=>handleIncrement(product.id)}> + </button>
               <button type="button" variant="light" onClick={()=>handleDecrement(product.id)}> - </button>{" "}
+              {product.amount} in cart
               
               
             </div>
