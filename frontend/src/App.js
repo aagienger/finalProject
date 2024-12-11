@@ -67,7 +67,8 @@ function App() {
                 />
                 <Route path="/add-product" element={<AddContact products={products} setProducts={setProducts}/> }/>
                 <Route path="/deletecontact" element={<DeleteContact products={products} setProducts={setProducts}/>}/>
-                
+                <Route path="/search" element={<SearchContact products={products} setProducts={setProducts}/> }/>
+
               </Routes>
             </div>
           </div>
