@@ -19,7 +19,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/contacts" className="nav-link text-dark">
+          <Link to="/product" className="nav-link text-dark">
             View All Products
           </Link>
         </li>
@@ -29,12 +29,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           </Link>
         </li>
         <li className="nav-item">
-          <button className="nav-link text-dark" >
-            Monitors
-          </button>
+        <Link to="/add-product" className="nav-link text-dark">Add Contact</Link>
         </li>
-        
-          
+        <li className="nav-item">
+        <Link to="/deletecontact" className="nav-link text-dark">Delete Contact</Link>
+        </li>
+        <li className="nav-item">
+        <Link to="/cart" className="nav-link text-dark">Cart</Link>
+        </li>
         
       </ul>
       

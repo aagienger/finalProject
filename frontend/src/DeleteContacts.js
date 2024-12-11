@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const DeleteContact = ({ contacts, setContacts }) => {
+const DeleteContact = ({ products, setProducts }) => {
   const [contactName, setContactName] = useState("");
   const [contactsQuery, setContactsQuery] = useState([]);
 
@@ -13,7 +13,7 @@ const DeleteContact = ({ contacts, setContacts }) => {
     }
     try {
       const response = await fetch(
-        `http://localhost:8081/contact/name?contact_name=${encodeURIComponent(
+        `http://localhost:8081/product/name?contact_name=${encodeURIComponent(
           contactName
         )}`
       );
@@ -32,7 +32,7 @@ const DeleteContact = ({ contacts, setContacts }) => {
   // Delete a contact by ID
   const deleteOneContact = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8081/contact/${id}`, {
+      const response = await fetch(`http://localhost:8081/product/${id}`, {
         method: "DELETE",
       });
       // Http status code 200, 201 is ok
@@ -65,16 +65,16 @@ const DeleteContact = ({ contacts, setContacts }) => {
       </div>
       {/* List the result and add Delete button to each */}
       <ul className="list-group">
-        {contactsQuery.map((contact) => (
-          <li
-            key={contact.id}
-            className="list-group-item d-flex justify-content-between align-items-center"
-          >
-            <div className="d-flex align-items-center">
-              {contact.image_url && (
+        {contactsQuery.map((product) => (
+          
+            <li
+              key={product.id}
+              className="list-group-item d-flex align-items-center"
+            >
+              {product.img && (
                 <img
-                  src={`http://localhost:8081${contact.image_url}`}
-                  alt={contact.contact_name}
+                  src={`http://localhost:8081${product.img}`}
+                  alt={product.name}
                   style={{
                     width: "50px",
                     height: "50px",
@@ -83,15 +83,11 @@ const DeleteContact = ({ contacts, setContacts }) => {
                   }}
                 />
               )}
-              <div>
-                <strong>{contact.contact_name}</strong> - {contact.phone_number}
-                <p>{contact.message}</p>
-              </div>
-            </div>
+            
             {/* Delete contact button */}
             <button
               className="btn btn-outline-secondary btn-sm rounded-pill"
-              onClick={() => deleteOneContact(contact.id)}
+              onClick={() => deleteOneContact(product.id)}
             >
               Delete
             </button>

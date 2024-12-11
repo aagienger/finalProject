@@ -2,22 +2,25 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AddContact = () => {
-  const [contactName, setContactName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [message, setMessage] = useState("");
+  const [productName, setProductName] = useState("");
+  const [type,setType] = useState("");
+  const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
+  const [price, setPrice] = useState("");
   const [preview, setPreview] = useState(null);
-
+  const [amount,setAmount] = useState("");
   const addOneContact = async () => {
     try {
       // Create a FormData object to hold the fields and the file
       const formData = new FormData();
-      formData.append("contact_name", contactName);
-      formData.append("phone_number", phoneNumber);
-      formData.append("message", message);
-      formData.append("image", image); // Add the file to the form data
+      formData.append("name", productName);
+      formData.append("image", image);
+      formData.append("description", description);// Add the file to the form data
+      formData.append("price", price);
+      formData.append("amount",amount);
+      formData.append("type", type);
       // Send the FormData object to the backend
-      const response = await fetch("http://localhost:8081/contact", {
+      const response = await fetch("http://localhost:8081/product", {
         method: "POST",
         body: formData, // No need to set Content-Type; fetch will handle it
       });
@@ -30,8 +33,10 @@ const AddContact = () => {
         const successMessage = await response.text(); // Handle plain text response
         alert(successMessage);
       }
+      console.log(response);
     } catch (err) {
       alert("An error occurred :" + err);
+      
     }
   };
 
@@ -46,11 +51,13 @@ const AddContact = () => {
     // Call this function to fetch backend with method POST
     addOneContact();
     // Clean hooks to start again
-    setContactName("");
-    setPhoneNumber("");
-    setMessage("");
+    setProductName("");
+    setType("");
+    setDescription("");
     setImage(null);
-    setPreview(null);
+    setPrice("");
+    setAmount("0");
+    
   };
 
   return (
@@ -58,35 +65,51 @@ const AddContact = () => {
       <h2 className="text-center">Add New Contact</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="form-label">Contact Name</label>
+          <label className="form-label">Product Name</label>
           <input
             type="text"
             className="form-control"
-            value={contactName}
-            onChange={(e) => setContactName(e.target.value)}
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
             required
           />
         </div>
         <div className="mb-3">
-          <label className="form-label">Phone Number</label>
+          <label className="form-label">Description</label>
           <input
             type="text"
             className="form-control"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             required
           />
         </div>
         <div className="mb-3">
-          <label className="form-label">Message</label>
+          <label className="form-label">Type</label>
           <textarea
             className="form-control"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            value={type}
+            onChange={(e) => setType(e.target.value)}
           ></textarea>
         </div>
         <div className="mb-3">
-          <label className="form-label">Contact Image</label>
+          <label className="form-label">Price</label>
+          <textarea
+            className="form-control"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+          ></textarea>
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Amount</label>
+          <textarea
+            className="form-control"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          ></textarea>
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Product Image</label>
           <input
             type="file"
             className="form-control"
@@ -102,7 +125,7 @@ const AddContact = () => {
           )}
         </div>
         <button type="submit" className="btn btn-primary">
-          Add Contact
+          Add Product
         </button>
       </form>
     </div>

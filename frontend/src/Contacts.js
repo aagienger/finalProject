@@ -17,12 +17,72 @@ const Products = ({ products, setProducts }) => {
       }
     };
     fetchProducts();
-  }, []);
+  }, [products]);
   const handleTypeChange = (event) => {
     setSelectedType(event.target.value); // Update selected type
   };
   const filteredProducts = selectedType === "all"
   ? products : products.filter(product => product.type === selectedType);
+
+  const handleIncrement = async (productId) => {
+    const product = products.find((p) => p.id === productId);
+    if (!product) return;
+
+    const updatedAmount = product.amount + 1;
+
+    try {
+      const response = await fetch(`http://localhost:8081/product/${productId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body:  JSON.stringify({amount : updatedAmount}),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.err}`);
+        return;
+      }
+
+      
+    } catch (err) {
+      console.error("Error updating product amount:", err);
+      alert("Failed to update the amount");
+    }
+  };
+  const handleDecrement = async (productId) => {
+    const product = products.find((p) => p.id === productId);
+    if (!product || product.amount <= 0) return;
+
+    const updatedAmount = product.amount - 1;
+
+    try {
+      const response = await fetch(`http://localhost:8081/product/${productId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ amount: updatedAmount }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.err}`);
+        return;
+      }
+
+      // Update local state
+      setProducts((prevProducts) =>
+        prevProducts.map((p) =>
+          p.id === productId ? { ...p, amount: updatedAmount } : p
+        )
+      );
+    } catch (err) {
+      console.error("Error updating product amount:", err);
+      alert("Failed to update the amount");
+    }
+  };
   return (
     <div className="container">
       
@@ -64,8 +124,8 @@ const Products = ({ products, setProducts }) => {
             <div>
               <strong>{product.name}</strong> - {product.description}
               <p>$<strong>{product.price}</strong></p>
-              <button type="button" variant="light" > + </button>
-              <button type="button" variant="light" > - </button>{" "}
+              <button type="button" variant="light" onClick={()=>handleIncrement(product.id)}> + </button>
+              <button type="button" variant="light" onClick={()=>handleDecrement(product.id)}> - </button>{" "}
               
               
             </div>

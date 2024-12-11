@@ -14,8 +14,8 @@ app.use("/images", express.static("images"));
 const mysql = require("mysql2");
 const db = mysql.createConnection({
   host: "127.0.0.1",
-  user: "fallstudent",
-  password: "fallstudent",
+  user: "aaron",
+  password: "makena@1998",
   database: "final",
 });
 
@@ -140,32 +140,32 @@ app.get("/cart", (req, res) => {
 //   }
 // });
 
-// app.get("/contact/name", (req, res) => {
-//   const { contact_name } = req.query;
+app.get("/product/name", (req, res) => {
+  const { contact_name } = req.query;
 
-//   if (!contact_name) {
-//     return res.status(400).send({ error: "contact_name is required" });
-//   }
-//   const query = "SELECT * FROM contact WHERE LOWER(contact_name) LIKE LOWER(?)";
-//   const searchValue = `%${contact_name}%`; // Add wildcards for partial match
+  if (!contact_name) {
+    return res.status(400).send({ error: "contact_name is required" });
+  }
+  const query = "SELECT * FROM prod WHERE LOWER(name) LIKE LOWER(?)";
+  const searchValue = `%${contact_name}%`; // Add wildcards for partial match
 
-//   try {
-//     db.query(query, [searchValue], (err, result) => {
-//       if (err) {
-//         console.error("Error fetching contacts:", err);
-//         return res.status(500).send({ error: "Error fetching contacts" });
-//       }
-//       res.status(200).send(result);
-//     });
-//   } catch (err) {
-//     console.error({
-//       error: "An unexpected error occurred in GET by name" + err,
-//     });
-//     res
-//       .status(500)
-//       .send({ error: "An unexpected error occurred in GET by name" + err });
-//   }
-// });
+  try {
+    db.query(query, [searchValue], (err, result) => {
+      if (err) {
+        console.error("Error fetching contacts:", err);
+        return res.status(500).send({ error: "Error fetching contacts" });
+      }
+      res.status(200).send(result);
+    });
+  } catch (err) {
+    console.error({
+      error: "An unexpected error occurred in GET by name" + err,
+    });
+    res
+      .status(500)
+      .send({ error: "An unexpected error occurred in GET by name" + err });
+  }
+});
 
 // app.post("/contact/login", (req, res) => {
 //   const { username, password } = req.body;
@@ -202,101 +202,101 @@ app.get("/cart", (req, res) => {
 //   }
 // });
 
-// app.post("/contact", upload.single("image"), (req, res) => {
-//   const { contact_name, phone_number, message } = req.body;
-//   const imageUrl = req.file ? `/images/${req.file.filename}` : null;
+app.post("/product", upload.single("image"), (req, res) => {
+  const { name, description,price,amount, type } = req.body;
+  const img = req.file ? `/images/${req.file.filename}` : null;
 
-//   const checkQuery = `SELECT * FROM contact WHERE contact_name = ?`;
-//   db.query(checkQuery, [contact_name], (checkErr, checkResult) => {
-//     if (checkErr) {
-//       console.error("Database error during validation:", checkErr);
-//       return res
-//         .status(500)
-//         .send({ error: "Error checking contact name: " + checkErr.message });
-//     }
-//     if (checkResult.length > 0) {
-//       // If contact_name exists, send a conflict response
-//       return res.status(409).send({ error: "Contact name already exists." });
-//     }
-//   });
+  const checkQuery = `SELECT * FROM prod WHERE name = ?`;
+  db.query(checkQuery, [name], (checkErr, checkResult) => {
+    if (checkErr) {
+      console.error("Database error during validation:", checkErr);
+      return res
+        .status(500)
+        .send({ error: "Error checking contact name: " + checkErr.message });
+    }
+    if (checkResult.length > 0) {
+      // If contact_name exists, send a conflict response
+      return res.status(409).send({ error: "Contact name already exists." });
+    }
+  });
 
-//   const query =
-//     "INSERT INTO contact (contact_name, phone_number, message, image_url) VALUES (?, ?, ?, ?)";
-//   try {
-//     db.query(
-//       query,
-//       [contact_name, phone_number, message, imageUrl],
-//       (err, result) => {
-//         if (err) {
-//           console.log(err);
-//           res.status(500).send({ error: "Error adding contact" + err });
-//         } else {
-//           res.status(201).send("Contact added successfully");
-//         }
-//       }
-//     );
-//   } catch (err) {
-//     // Handle synchronous errors
-//     console.error("Error in POST /contact:", err);
-//     res
-//       .status(500)
-//       .send({ error: "An unexpected error occurred: " + err.message });
-//   }
-// });
+  const query =
+    "INSERT INTO prod (name ,img ,description , price, amount, type) VALUES (?, ?, ?, ?, ?, ?)";
+  try {
+    db.query(
+      query,
+      [name,img, description,  price,amount,type],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send({ error: "Error adding contact" + err });
+        } else {
+          res.status(201).send("Contact added successfully");
+        }
+      }
+    );
+  } catch (err) {
+    // Handle synchronous errors
+    console.error("Error in POST /contact:", err);
+    res
+      .status(500)
+      .send({ error: "An unexpected error occurred: " + err.message });
+  }
+});
 
-// app.delete("/contact/:id", (req, res) => {
-//   const id = req.params.id;
+app.delete("/product/:id", (req, res) => {
+  const id = req.params.id;
 
-//   const query = "DELETE FROM contact WHERE id = ?";
-//   try {
-//     db.query(query, [id], (err, result) => {
-//       if (err) {
-//         console.log(err);
-//         res.status(500).send({ err: "Error deleting contact" });
-//       } else if (result.affectedRows === 0) {
-//         res.status(404).send({ err: "Contact not found" });
-//       } else {
-//         res.status(200).send("Contact deleted successfully");
-//       }
-//     });
-//   } catch (err) {
-//     // Handle synchronous errors
-//     console.error("Error in DELETE /contact:", err);
-//     res.status(500).send({
-//       error: "An unexpected error occurred in DELETE: " + err.message,
-//     });
-//   }
-// });
+  const query = "DELETE FROM prod WHERE id = ?";
+  try {
+    db.query(query, [id], (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send({ err: "Error deleting contact" });
+      } else if (result.affectedRows === 0) {
+        res.status(404).send({ err: "Contact not found" });
+      } else {
+        res.status(200).send("Contact deleted successfully");
+      }
+    });
+  } catch (err) {
+    // Handle synchronous errors
+    console.error("Error in DELETE /prod:", err);
+    res.status(500).send({
+      error: "An unexpected error occurred in DELETE: " + err.message,
+    });
+  }
+});
 
-// app.put("/contact/:id", (req, res) => {
-//   const id = req.params.id;
+app.put("/product/:id", (req, res) => {
+  const id = req.params.id;
+  const {amount}=req.body;
+  const query = `
+  UPDATE prod
+  SET amount = ?
+  WHERE id = ?
+  `;
 
-//   const query = `
-//   UPDATE contact
-//   SET contact_name = ?, phone_number = ?, message = ?
-//   WHERE id = ?
-//   `;
-
-//   try {
-//     db.query(
-//       query,
-//       [contact_name, phone_number, message, id],
-//       (err, result) => {
-//         if (err) {
-//           console.log(err);
-//           res.status(500).send({ err: "Error updating contact" });
-//         } else if (result.affectedRows === 0) {
-//           res.status(404).send({ err: "Contact not found" });
-//         } else {
-//           res.status(200).send("Contact updated successfully");
-//         }
-//       }
-//     );
-//   } catch {
-//     // Handle synchronous errors
-//     console.error("Error in UPDATE /contact:", err);
-//     res.status(500).send({
-//       error: "An unexpected error occurred in UPDATE: " + err.message,
-//     });
-//   }
-// });
+  try {
+    db.query(
+      query,
+      [amount, id],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send({ err: "Error updating contact" });
+        } else if (result.affectedRows === 0) {
+          res.status(404).send({ err: "Contact not found" });
+        } else {
+          res.status(200).send("Contact updated successfully");
+        }
+      }
+    );
+  } catch(err) {
+    // Handle synchronous errors
+    console.error("Error in UPDATE /contact:", err);
+    res.status(500).send({
+      error: "An unexpected error occurred in UPDATE: " + err.message,
+    });
+  }
+});
