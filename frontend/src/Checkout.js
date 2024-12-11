@@ -51,7 +51,7 @@ const Checkout = ({ products, setProducts }) => {
   };
 
   const getCost = () => {
-    var cost = 0;
+    var cost = 0.0;
 
     products.map((product) =>{
       cost += product.price;
@@ -194,7 +194,7 @@ const Checkout = ({ products, setProducts }) => {
             </li>
           ))}
         </ul>
-        Total Cost : {getCost}
+        Total Cost : ${getCost()}
       </div>
     </div>
   );
