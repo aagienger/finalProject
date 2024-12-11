@@ -9,6 +9,9 @@ const Checkout = ({ products, setProducts }) => {
   const [zip, setZip] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [expDate, setExpDate] = useState("");
+  const [cvv, setCVV] = useState("");
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -58,6 +61,77 @@ const Checkout = ({ products, setProducts }) => {
             onChange={(e) => setCity(e.target.value)}
           ></textarea>
         </div>
+        <div className="mb-3">
+          <label className="form-label">State</label>
+          <input
+            type="text"
+            className="form-control"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Zip</label>
+          <input
+            type="text"
+            className="form-control"
+            value={zip}
+            onChange={(e) => setZip(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Email</label>
+          <input
+            type="text"
+            className="form-control"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        
+        <div className="mb-3">
+          <label className="form-label">Phone Number</label>
+          <input
+            type="text"
+            className="form-control"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Card Number</label>
+          <input
+            type="text"
+            className="form-control"
+            value={cardNumber}
+            onChange={(e) => setCardNumber(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Expiration Date</label>
+          <input
+            type="text"
+            className="form-control"
+            value={expDate}
+            onChange={(e) => setExpDate(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">CVV</label>
+          <input
+            type="text"
+            className="form-control"
+            value={cvv}
+            onChange={(e) => setCVV(e.target.value)}
+            required
+          />
+        </div>
         <button type="submit" className="btn btn-primary">
           Place Order
         </button>
@@ -83,7 +157,7 @@ const Checkout = ({ products, setProducts }) => {
                 />
               )}
               <div>
-                <strong>{product.name}</strong> - {product.price} - {product.amount}
+                <strong>{product.name}</strong> - Price - {product.price} - Amount -  {product.amount}
               </div>
             </li>
           ))}

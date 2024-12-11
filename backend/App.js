@@ -14,8 +14,8 @@ app.use("/images", express.static("images"));
 const mysql = require("mysql2");
 const db = mysql.createConnection({
   host: "127.0.0.1",
-  user: "aaron",
-  password: "makena@1998",
+  user: "fallstudent",
+  password: "fallstudent",
   database: "final",
 });
 
@@ -57,6 +57,23 @@ app.get("/product", (req, res) => {
     res.status(500).send({ error: "An unexpected error occurred" + err });
   }
 });
+
+app.get("/cart", (req, res) => {
+  try{
+    db.query("SELECT * FROM prod WHERE amount > 0", (err, result) => {
+      if (err) {
+        console.error({ error: "Error reading all posts:" + err });
+        return res
+          .status(500)
+          .send({ error: "Error reading all contacts" + err });
+      }
+      res.status(200).send(result);
+    });
+  } catch (err) {
+    console.error({ error: "An unexpected error occurred" + err });
+    res.status(500).send({ error: "An unexpected error occurred" + err });
+  }
+})
 
 // app.post("/contact/messages", (req, res) => {
 //   const { contactId, message } = req.body;
