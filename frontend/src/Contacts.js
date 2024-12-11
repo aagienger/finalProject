@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Products = ({ products, setProducts }) => {
+  const [selectedType, setSelectedType] = useState("all");
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -17,13 +18,33 @@ const Products = ({ products, setProducts }) => {
     };
     fetchProducts();
   }, []);
-
+  const handleTypeChange = (event) => {
+    setSelectedType(event.target.value); // Update selected type
+  };
+  const filteredProducts = selectedType === "all"
+  ? products : products.filter(product => product.type === selectedType);
   return (
     <div className="container">
       
       <h2 className="text-center mt-4">Products List</h2>
+      <div className="mb-3">
+        <label htmlFor="type-select" className="form-label">Filter</label>
+        <select
+          id="type-select"
+          className="form-select"
+          value={selectedType}
+          onChange={handleTypeChange}
+        >
+          <option value="all">All Products</option>
+          <option value="laptop">Laptops</option>
+          <option value="monitor">Monitors</option>
+          <option value="console">Consoles</option>
+          <option value="desk">Pcs</option>
+          {/* Add more options based on your available product types */}
+        </select>
+      </div>
       <ul className="list-group">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <li
             key={product.id}
             className="list-group-item d-flex align-items-center"
@@ -42,6 +63,10 @@ const Products = ({ products, setProducts }) => {
             )}
             <div>
               <strong>{product.name}</strong> - {product.description}
+              <p>$<strong>{product.price}</strong></p>
+              <button type="button" variant="light" > + </button>
+              <button type="button" variant="light" > - </button>{" "}
+              
               
             </div>
           </li>

@@ -20,32 +20,21 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         </li>
         <li className="nav-item">
           <Link to="/contacts" className="nav-link text-dark">
-            View ALL Contacts
+            View All Products
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/searchContacts" className="nav-link text-dark">
-            Search Contacts
+          <Link to="/products" className="nav-link text-dark">
+            Search
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/new_message" className="nav-link text-dark">
-            Add New Message
-          </Link>
+          <button className="nav-link text-dark" >
+            Monitors
+          </button>
         </li>
         
-          <>
-            <li className="nav-item">
-              <Link to="/add-contact" className="nav-link text-dark">
-                Add Contact
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/deletecontact" className="nav-link text-dark">
-                Delete Contact
-              </Link>
-            </li>
-          </>
+          
         
       </ul>
       
