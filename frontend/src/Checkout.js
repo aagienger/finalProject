@@ -29,6 +29,37 @@ const Checkout = ({ products, setProducts }) => {
     fetchCart();
   }, []);
 
+  /*const resetCart = async () => {
+
+  }*/
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    //resetCart
+
+    setName("");
+    setAddress("");
+    setCity("");
+    setState("");
+    setZip("");
+    setEmail("");
+    setPhoneNumber("");
+    setCardNumber("");
+    setExpDate("");
+    setCVV("");
+  };
+
+  const getCost = () => {
+    var cost = 0;
+
+    products.map((product) =>{
+      cost += product.price;
+    })
+
+    return cost;
+  }
+
   return (
     <div className="container mt-4">
       <h2 className="text-center">Input Order Information</h2>
@@ -91,7 +122,7 @@ const Checkout = ({ products, setProducts }) => {
             required
           />
         </div>
-        
+
         <div className="mb-3">
           <label className="form-label">Phone Number</label>
           <input
@@ -157,11 +188,13 @@ const Checkout = ({ products, setProducts }) => {
                 />
               )}
               <div>
-                <strong>{product.name}</strong> - Price - {product.price} - Amount -  {product.amount}
+                <strong>{product.name}</strong> - Price - {product.price * product.amount} -
+                Amount - {product.amount}
               </div>
             </li>
           ))}
         </ul>
+        Total Cost : {getCost}
       </div>
     </div>
   );
