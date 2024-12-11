@@ -14,8 +14,8 @@ app.use("/images", express.static("images"));
 const mysql = require("mysql2");
 const db = mysql.createConnection({
   host: "127.0.0.1",
-  user: "aaron",
-  password: "makena@1998",
+  user: "fallstudent",
+  password: "fallstudent",
   database: "final",
 });
 
@@ -75,71 +75,6 @@ app.get("/cart", (req, res) => {
   }
 })
 
-// app.post("/contact/messages", (req, res) => {
-//   const { contactId, message } = req.body;
-//   const query =
-//     "INSERT INTO message (contact_id, message, message_timestamp) VALUES (?, ?, NOW())";
-
-//   try {
-//     db.query(query, [contactId, message], (err, results) => {
-//       if (err) {
-//         // In case of an error occurs
-//         console.log("Error in /contact/messages " + err);
-//         res.status(409).send({ error: "Error adding Messages " + err });
-//       } else {
-//         // If it was successful
-//         res.status(201).send("Message added successfully");
-//       }
-//     });
-//   } catch (err) {
-//     console.err("Error in /contact/messages " + err);
-//     res.status(500).send({ error: "Error sending message" + err });
-//   }
-// });
-
-// app.get("/contact/messages/:contactId", (req, res) => {
-//   const { contactId } = req.params;
-//   const query =
-//     "SELECT * FROM message WHERE contact_id = ? ORDER BY message_timestamp DESC";
-
-//   try {
-//     db.query(query, [contactId], (err, results) => {
-//       if (err) {
-//         console.error("Error fetching Messages:", err);
-//         return res.status(500).send({ error: "Error fetching Messages" + err });
-//       }
-//       console.log(results);
-//       res.status(200).json(results);
-//     });
-//   } catch (err) {
-//     res.status(500).send({ error: "Error fetching messages", err });
-//   }
-// });
-
-// app.get("/contact/profile_picture/:contact_name", (req, res) => {
-//   const contact_name = req.params.contact_name;
-//   const query = "SELECT image_url FROM contact WHERE contact_name = ?";
-
-//   try {
-//     db.query(query, [contact_name], (err, result) => {
-//       if (err) {
-//         console.log({ error: "Error in Profile Picture" });
-//         return res
-//           .status(500)
-//           .send({ error: "Error fetching Profile Picture :" + err });
-//       } else if (result.length) {
-//         console.log(result);
-//         res.json({ picture: result[0].image_url }); // return local url
-//       } else {
-//         res.status(404).send({ error: "Profile picture not found" });
-//       }
-//     });
-//   } catch (err) {
-//     console.error("Error fetching profile picture:", err);
-//     res.status(500).send({ error: "Error fetching profile picture :" + err });
-//   }
-// });
-
 app.get("/product/name", (req, res) => {
   const { contact_name } = req.query;
 
@@ -166,41 +101,6 @@ app.get("/product/name", (req, res) => {
       .send({ error: "An unexpected error occurred in GET by name" + err });
   }
 });
-
-// app.post("/contact/login", (req, res) => {
-//   const { username, password } = req.body;
-
-//   const query = "SELECT role FROM user WHERE user = ? AND password = ?";
-
-//   try {
-//     db.query(query, [username, password], (err, results) => {
-//       if (err) {
-//         console.error("Database error during login:", err);
-//         return res
-//           .status(500)
-//           .send({ error: "An error occurred in Query. Please try again." });
-//       }
-//       if (results.length === 0) {
-//         return res.status(401).send({ error: "Invalid username or password." });
-//       }
-//       // If there is not any error, respond with code and role
-//       const { role } = results[0];
-//       res.status(200).send({ role });
-//     });
-//   } catch (err) {
-//     // Handle synchronous errors
-//     console.error("Error in GET /contact/login", err);
-//     res
-//       .status(500)
-//       .send({ error: "An unexpected error occurred in Login: " + err.message });
-//   }
-
-//   if (!username || !password) {
-//     return res
-//       .status(400)
-//       .send({ error: "Username and password are required." });
-//   }
-// });
 
 app.post("/product", upload.single("image"), (req, res) => {
   const { name, description,price,amount, type } = req.body;
@@ -269,6 +169,39 @@ app.delete("/product/:id", (req, res) => {
 });
 
 app.put("/product/:id", (req, res) => {
+  const id = req.params.id;
+  const {amount}=req.body;
+  const query = `
+  UPDATE prod
+  SET amount = ?
+  WHERE id = ?
+  `;
+
+  try {
+    db.query(
+      query,
+      [amount, id],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send({ err: "Error updating contact" });
+        } else if (result.affectedRows === 0) {
+          res.status(404).send({ err: "Contact not found" });
+        } else {
+          res.status(200).send("Contact updated successfully");
+        }
+      }
+    );
+  } catch(err) {
+    // Handle synchronous errors
+    console.error("Error in UPDATE /contact:", err);
+    res.status(500).send({
+      error: "An unexpected error occurred in UPDATE: " + err.message,
+    });
+  }
+});
+
+app.put("/cart/:id", (req, res) => {
   const id = req.params.id;
   const {amount}=req.body;
   const query = `
