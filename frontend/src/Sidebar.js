@@ -1,36 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const Sidebar = ({ username, userRole }) => {
-  const [profilePicture, setProfilePicture] = useState(null);
-
-  useEffect(() => {
-    async function fetchProfilePicture() {
-      console.log("Read the picture for Sidebar ...");
-      try {
-        const response = await fetch(
-          `http://localhost:8081/contact/profile_picture/${encodeURIComponent(
-            username
-          )}`
-        );
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-          setProfilePicture(`http://localhost:8081${data.picture}`);
-        } else {
-          console.error(
-            "Failed to fetch profile picture: ",
-            response.statusText
-          );
-        }
-      } catch (err) {
-        console.error("Failed to fetch profile picture: ", err);
-      }
-    }
-    fetchProfilePicture();
-  }, []);
+const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   return (
+    <div style={{ display: isOpen ? "block" : "none" }}>
+            
+            
     <div
       className="d-flex flex-column vh-100 p-3 bg-light"
       style={{ width: "250px" }}
@@ -57,7 +33,7 @@ const Sidebar = ({ username, userRole }) => {
             Add New Message
           </Link>
         </li>
-        {userRole === "admin" && (
+        
           <>
             <li className="nav-item">
               <Link to="/add-contact" className="nav-link text-dark">
@@ -70,19 +46,10 @@ const Sidebar = ({ username, userRole }) => {
               </Link>
             </li>
           </>
-        )}
+        
       </ul>
-      {/* Other Sidebar Content */}
-      <div className="profile-picture">
-        {profilePicture && (
-          <img
-            src={profilePicture}
-            style={{ width: "150px", height: "auto" }}
-            alt="User Profile"
-          />
-        )}
-        <p>{username}</p>
-      </div>
+      
+    </div>
     </div>
   );
 };

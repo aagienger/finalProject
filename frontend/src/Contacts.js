@@ -1,36 +1,37 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Contacts = ({ contacts, setContacts }) => {
+const Products = ({ products, setProducts }) => {
   useEffect(() => {
-    const fetchContacts = async () => {
+    const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8081/contact");
+        const response = await fetch("http://localhost:8081/product");
         if (!response.ok) {
           throw new Error("Failed to fetch contacts");
         }
         const data = await response.json();
-        setContacts(data);
+        setProducts(data);
       } catch (error) {
         alert("There was an Error loading contacts " + error);
       }
     };
-    fetchContacts();
+    fetchProducts();
   }, []);
 
   return (
     <div className="container">
-      <h2 className="text-center mt-4">Contacts List</h2>
+      
+      <h2 className="text-center mt-4">Products List</h2>
       <ul className="list-group">
-        {contacts.map((contact) => (
+        {products.map((product) => (
           <li
-            key={contact.id}
+            key={product.id}
             className="list-group-item d-flex align-items-center"
           >
-            {contact.image_url && (
+            {product.img && (
               <img
-                src={`http://localhost:8081${contact.image_url}`}
-                alt={contact.contact_name}
+                src={`http://localhost:8081${product.img}`}
+                alt={product.name}
                 style={{
                   width: "50px",
                   height: "50px",
@@ -40,8 +41,8 @@ const Contacts = ({ contacts, setContacts }) => {
               />
             )}
             <div>
-              <strong>{contact.contact_name}</strong> - {contact.phone_number}
-              <p>{contact.message}</p>
+              <strong>{product.name}</strong> - {product.description}
+              
             </div>
           </li>
         ))}
@@ -50,4 +51,4 @@ const Contacts = ({ contacts, setContacts }) => {
   );
 };
 
-export default Contacts;
+export default Products;
