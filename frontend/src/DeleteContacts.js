@@ -50,12 +50,12 @@ const DeleteContact = ({ products, setProducts }) => {
   return (
     <div className="container">
       {/* Input name or partial name for FETCH */}
-      <h2 className="text-center mt-4">Delete Contact</h2>
+      <h2 className="text-center mt-4">Delete Product</h2>
       <div className="input-group mb-3">
         <input
           type="text"
           className="form-control"
-          placeholder="Enter contact name"
+          placeholder="Enter Product name"
           value={contactName}
           onChange={(e) => setContactName(e.target.value.toLowerCase())}
         />

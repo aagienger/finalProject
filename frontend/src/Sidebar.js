@@ -20,7 +20,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         </li>
         <li className="nav-item">
           <Link to="/product" className="nav-link text-dark">
-            View All Products
+            View all Products
           </Link>
         </li>
         <li className="nav-item">
@@ -29,10 +29,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           </Link>
         </li>
         <li className="nav-item">
-        <Link to="/add-product" className="nav-link text-dark">Add Contact</Link>
+        <Link to="/add-product" className="nav-link text-dark">Add Product</Link>
         </li>
         <li className="nav-item">
-        <Link to="/deletecontact" className="nav-link text-dark">Delete Contact</Link>
+        <Link to="/deletecontact" className="nav-link text-dark">Delete Product</Link>
         </li>
         <li className="nav-item">
         <Link to="/cart" className="nav-link text-dark">Cart</Link>
