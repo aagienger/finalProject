@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Checkout = () => {
+const Checkout = ({ products, setProducts }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -9,6 +9,22 @@ const Checkout = () => {
   const [zip, setZip] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const response = await fetch("http://localhost:8081/cart");
+        if (!response.ok) {
+          throw new Error("Failed to fetch cart");
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        alert("There was an Error loading cart " + error);
+      }
+    };
+    fetchCart();
+  }, []);
 
   return (
     <div className="container mt-4">
@@ -42,29 +58,36 @@ const Checkout = () => {
             onChange={(e) => setCity(e.target.value)}
           ></textarea>
         </div>
-        <div className="mb-3">
-          <label className="form-label">Contact Image</label>
-          <input
-            type="file"
-            className="form-control"
-            onChange={handleImageChange}
-          />
-          {preview && (
-            <img
-              src={preview}
-              alt="Preview"
-              className="mt-3"
-              style={{ width: "100px", height: "100px", objectFit: "cover" }}
-            />
-          )}
-        </div>
         <button type="submit" className="btn btn-primary">
-          Add Contact
+          Place Order
         </button>
       </form>
       <div>
         Cart
-          
+        <ul className="list-group">
+          {products.map((product) => (
+            <li
+              key={product.id}
+              className="list-group-item d-flex align-items-center"
+            >
+              {product.img && (
+                <img
+                  src={`http://localhost:8081${product.img}`}
+                  alt={product.name}
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    marginRight: "15px",
+                    objectFit: "cover",
+                  }}
+                />
+              )}
+              <div>
+                <strong>{product.name}</strong> - {product.price} - {product.amount}
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
