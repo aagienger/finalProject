@@ -6,7 +6,7 @@ import Sidebar from "./Sidebar.js";
 import DeleteContact from "./DeleteContacts.js";
 import SearchContact from "./SearchContacts.js";
 
-import NewMessage from "./NewMessages.js";
+import AboutUs from "./NewMessages.js"
 import "bootstrap/dist/css/bootstrap.min.css";
 import Checkout from "./Checkout.js";
 
@@ -17,6 +17,7 @@ function App() {
   const [password, setPassword] = useState("");
   const [isSidebarOpen,setSidebar] = useState(false);
   const [selectedType, setSelectedType] = useState("all");
+
   const toggleSidebar = () => {
     setSidebar(!isSidebarOpen);
   }
@@ -68,7 +69,8 @@ function App() {
                 <Route path="/add-product" element={<AddContact products={products} setProducts={setProducts}/> }/>
                 <Route path="/deletecontact" element={<DeleteContact products={products} setProducts={setProducts}/>}/>
                 <Route path="/search" element={<SearchContact products={products} setProducts={setProducts}/> }/>
-
+                <Route path="/aboutus" element={<AboutUs/> }/>
+                       
               </Routes>
             </div>
           </div>
