@@ -37,7 +37,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         <li className="nav-item">
         <Link to="/cart" className="nav-link text-dark">Cart</Link>
         </li>
-        
+        <li className="nav-item">
+        <Link to="/aboutus" className="nav-link text-dark">About Us</Link>
+        </li>
       </ul>
       
     </div>
