@@ -15,6 +15,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isSidebarOpen,setSidebar] = useState(false);
+  const [selectedType, setSelectedType] = useState("all");
   const toggleSidebar = () => {
     setSidebar(!isSidebarOpen);
   }
@@ -24,7 +25,7 @@ function App() {
         <Router>
           <div className="d-flex">
             <button style={{height:"20px"}} onClick={toggleSidebar}>=</button>
-             <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar}/>
+             <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} setSelectedType={setSelectedType}/>
             <img src="http://localhost:8081/images/setupVault.webp"
             style={{
               width: "50px",
