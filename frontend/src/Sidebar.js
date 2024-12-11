@@ -20,19 +20,19 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         </li>
         <li className="nav-item">
           <Link to="/product" className="nav-link text-dark">
-            View all Products
+            View Products
           </Link>
         </li>
         <li className="nav-item">
           <Link to="/search" className="nav-link text-dark">
-            Search
+            Search Products
           </Link>
         </li>
         <li className="nav-item">
         <Link to="/add-product" className="nav-link text-dark">Add Product</Link>
         </li>
         <li className="nav-item">
-        <Link to="/deletecontact" className="nav-link text-dark">Delete Product</Link>
+        <Link to="/deleteproduct" className="nav-link text-dark">Delete Product</Link>
         </li>
         <li className="nav-item">
         <Link to="/cart" className="nav-link text-dark">Cart</Link>

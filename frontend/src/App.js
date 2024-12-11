@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import Products from "./Contacts.js";
-import AddContact from "./AddContacts.js";
+import Products from "./Products.js";
+import AddProduct from "./AddProducts.js";
 import Sidebar from "./Sidebar.js";
-import DeleteContact from "./DeleteContacts.js";
-import SearchContact from "./SearchContacts.js";
+import DeleteProduct from "./DeleteProducts.js";
+import SearchProduct from "./SearchProducts.js";
 
-import AboutUs from "./NewMessages.js"
+import AboutUs from "./AboutUs.js"
 import "bootstrap/dist/css/bootstrap.min.css";
 import Checkout from "./Checkout.js";
 
 function App() {
   const [products, setProducts] = useState([]);
-  const [userRole, setUserRole] = useState(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+ 
   const [isSidebarOpen,setSidebar] = useState(false);
   const [selectedType, setSelectedType] = useState("all");
 
@@ -23,7 +21,7 @@ function App() {
   }
   return (
     <div className="App" >
-      {/* {userRole ? ( */}
+      
         <Router>
           <div className="d-flex">
             <button style={{height:"20px"}} onClick={toggleSidebar}>=</button>
@@ -66,24 +64,16 @@ function App() {
                     <Products products={products} setProducts={setProducts} />
                   }
                 />
-                <Route path="/add-product" element={<AddContact products={products} setProducts={setProducts}/> }/>
-                <Route path="/deletecontact" element={<DeleteContact products={products} setProducts={setProducts}/>}/>
-                <Route path="/search" element={<SearchContact products={products} setProducts={setProducts}/> }/>
+                <Route path="/add-product" element={<AddProduct products={products} setProducts={setProducts}/> }/>
+                <Route path="/deleteproduct" element={<DeleteProduct products={products} setProducts={setProducts}/>}/>
+                <Route path="/search" element={<SearchProduct products={products} setProducts={setProducts}/> }/>
                 <Route path="/aboutus" element={<AboutUs/> }/>
                        
               </Routes>
             </div>
           </div>
         </Router>
-      {/* ) : (
-        <Authentication
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-          setUserRole={setUserRole}
-        />
-      )} */}
+      
     </div>
   );
 }

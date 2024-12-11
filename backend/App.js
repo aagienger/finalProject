@@ -14,8 +14,8 @@ app.use("/images", express.static("images"));
 const mysql = require("mysql2");
 const db = mysql.createConnection({
   host: "127.0.0.1",
-  user: "fallstudent",
-  password: "fallstudent",
+  user: "aaron",
+  password: "makena@1998",
   database: "final",
 });
 
@@ -28,14 +28,13 @@ app.listen(port, () => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "images/"); // Save images in the 'images' folder
+    cb(null, "images/"); 
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
+    cb(null, Date.now() + path.extname(file.originalname)); 
   },
 });
 const upload = multer({ storage: storage });
-// Create "images" folder if it doesn't exist
 const fs = require("fs");
 if (!fs.existsSync("images")) {
   fs.mkdirSync("images");
@@ -48,7 +47,7 @@ app.get("/product", (req, res) => {
         console.error({ error: "Error reading all posts:" + err });
         return res
           .status(500)
-          .send({ error: "Error reading all contacts" + err });
+          .send({ error: "Error reading all products" + err });
       }
       res.status(200).send(result);
     });
@@ -65,7 +64,7 @@ app.get("/cart", (req, res) => {
         console.error({ error: "Error reading all posts:" + err });
         return res
           .status(500)
-          .send({ error: "Error reading all contacts" + err });
+          .send({ error: "Error reading all products" + err });
       }
       res.status(200).send(result);
     });
@@ -76,19 +75,19 @@ app.get("/cart", (req, res) => {
 })
 
 app.get("/product/name", (req, res) => {
-  const { contact_name } = req.query;
+  const { product_name } = req.query;
 
-  if (!contact_name) {
-    return res.status(400).send({ error: "contact_name is required" });
+  if (!product_name) {
+    return res.status(400).send({ error: "product_name is required" });
   }
   const query = "SELECT * FROM prod WHERE LOWER(name) LIKE LOWER(?)";
-  const searchValue = `%${contact_name}%`; // Add wildcards for partial match
+  const searchValue = `%${product_name}%`; 
 
   try {
     db.query(query, [searchValue], (err, result) => {
       if (err) {
-        console.error("Error fetching contacts:", err);
-        return res.status(500).send({ error: "Error fetching contacts" });
+        console.error("Error fetching products:", err);
+        return res.status(500).send({ error: "Error fetching products" });
       }
       res.status(200).send(result);
     });
@@ -112,11 +111,10 @@ app.post("/product", upload.single("image"), (req, res) => {
       console.error("Database error during validation:", checkErr);
       return res
         .status(500)
-        .send({ error: "Error checking contact name: " + checkErr.message });
+        .send({ error: "Error checking product name: " + checkErr.message });
     }
     if (checkResult.length > 0) {
-      // If contact_name exists, send a conflict response
-      return res.status(409).send({ error: "Contact name already exists." });
+      return res.status(409).send({ error: "product name already exists." });
     }
   });
 
@@ -129,15 +127,14 @@ app.post("/product", upload.single("image"), (req, res) => {
       (err, result) => {
         if (err) {
           console.log(err);
-          res.status(500).send({ error: "Error adding contact" + err });
+          res.status(500).send({ error: "Error adding product" + err });
         } else {
-          res.status(201).send("Contact added successfully");
+          res.status(201).send("product added successfully");
         }
       }
     );
   } catch (err) {
-    // Handle synchronous errors
-    console.error("Error in POST /contact:", err);
+    console.error("Error in POST /product:", err);
     res
       .status(500)
       .send({ error: "An unexpected error occurred: " + err.message });
@@ -152,15 +149,14 @@ app.delete("/product/:id", (req, res) => {
     db.query(query, [id], (err, result) => {
       if (err) {
         console.log(err);
-        res.status(500).send({ err: "Error deleting contact" });
+        res.status(500).send({ err: "Error deleting product" });
       } else if (result.affectedRows === 0) {
-        res.status(404).send({ err: "Contact not found" });
+        res.status(404).send({ err: "product not found" });
       } else {
-        res.status(200).send("Contact deleted successfully");
+        res.status(200).send("product deleted successfully");
       }
     });
   } catch (err) {
-    // Handle synchronous errors
     console.error("Error in DELETE /prod:", err);
     res.status(500).send({
       error: "An unexpected error occurred in DELETE: " + err.message,
@@ -184,17 +180,16 @@ app.put("/product/:id", (req, res) => {
       (err, result) => {
         if (err) {
           console.log(err);
-          res.status(500).send({ err: "Error updating contact" });
+          res.status(500).send({ err: "Error updating product" });
         } else if (result.affectedRows === 0) {
-          res.status(404).send({ err: "Contact not found" });
+          res.status(404).send({ err: "product not found" });
         } else {
-          res.status(200).send("Contact updated successfully");
+          res.status(200).send("product updated successfully");
         }
       }
     );
   } catch(err) {
-    // Handle synchronous errors
-    console.error("Error in UPDATE /contact:", err);
+    console.error("Error in UPDATE /product:", err);
     res.status(500).send({
       error: "An unexpected error occurred in UPDATE: " + err.message,
     });
@@ -217,17 +212,16 @@ app.put("/cart/:id", (req, res) => {
       (err, result) => {
         if (err) {
           console.log(err);
-          res.status(500).send({ err: "Error updating contact" });
+          res.status(500).send({ err: "Error updating product" });
         } else if (result.affectedRows === 0) {
-          res.status(404).send({ err: "Contact not found" });
+          res.status(404).send({ err: "product not found" });
         } else {
-          res.status(200).send("Contact updated successfully");
+          res.status(200).send("product updated successfully");
         }
       }
     );
   } catch(err) {
-    // Handle synchronous errors
-    console.error("Error in UPDATE /contact:", err);
+    console.error("Error in UPDATE /product:", err);
     res.status(500).send({
       error: "An unexpected error occurred in UPDATE: " + err.message,
     });
