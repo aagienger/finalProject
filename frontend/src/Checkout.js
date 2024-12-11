@@ -29,15 +29,51 @@ const Checkout = ({ products, setProducts }) => {
     fetchCart();
   }, []);
 
-  /*const resetCart = async () => {
+  const resetCart = async (product) => {
+    const updatedAmount = 0;
 
-  }*/
+    try {
+      const response = await fetch(
+        `http://localhost:8081/product/${product.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ amount: updatedAmount }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.err}`);
+      }
+    } catch (err) {
+      console.error("Error updating product amount:", err);
+      alert("Failed to update the amount");
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    //resetCart
+    products.map((product) => {
+      resetCart(product);
+    });
 
+    const fetchCart = async () => {
+      try {
+        const response = await fetch("http://localhost:8081/cart");
+        if (!response.ok) {
+          throw new Error("Failed to fetch cart");
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        alert("There was an Error loading cart " + error);
+      }
+    };
+    fetchCart();
     setName("");
     setAddress("");
     setCity("");
@@ -54,7 +90,7 @@ const Checkout = ({ products, setProducts }) => {
     var cost = 0.0;
 
     products.map((product) => {
-      cost += product.price;
+      cost += product.price * product.amount;
     });
 
     return cost;
@@ -173,35 +209,35 @@ const Checkout = ({ products, setProducts }) => {
         </form>
       </div>
       <div className="flex-grow-1 p-3">
-      <h2 className="text-center">Cart</h2>
-          <ul className="list-group">
-            {products.map((product) => (
-              <li
-                key={product.id}
-                className="list-group-item d-flex align-items-center"
-              >
-                {product.img && (
-                  <img
-                    src={`http://localhost:8081${product.img}`}
-                    alt={product.name}
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      marginRight: "15px",
-                      objectFit: "cover",
-                    }}
-                  />
-                )}
-                <div>
-                  <strong>{product.name}</strong> - Price -{" "}
-                  {product.price * product.amount} - Amount - {product.amount}
-                </div>
-              </li>
-            ))}
-          </ul>
-          <h5>Total Cost : ${getCost()}</h5>
-        </div>
+        <h2 className="text-center">Cart</h2>
+        <ul className="list-group">
+          {products.map((product) => (
+            <li
+              key={product.id}
+              className="list-group-item d-flex align-items-center"
+            >
+              {product.img && (
+                <img
+                  src={`http://localhost:8081${product.img}`}
+                  alt={product.name}
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    marginRight: "15px",
+                    objectFit: "cover",
+                  }}
+                />
+              )}
+              <div>
+                <strong>{product.name}</strong> - Price -{" "}
+                {product.price * product.amount} - Amount - {product.amount}
+              </div>
+            </li>
+          ))}
+        </ul>
+        <h5>Total Cost : ${getCost()}</h5>
       </div>
+    </div>
   );
 };
 
